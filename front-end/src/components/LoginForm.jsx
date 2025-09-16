@@ -1,34 +1,43 @@
 import { useState } from "react";
 
-function LoginForm({ onLogin }) {
+
+function LoginForm({ onLogin, switchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     try {
       const response = await fetch("http://localhost:8000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
+
+
+
       if (!response.ok) {
-        throw new Error("Login gagal! Periksa email/password.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login gagal! Periksa email/password.");
       }
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token); // simpan token
 
-      onLogin(data); // kasih tahu parent kalau login sukses
+      const data = await response.json();
+      onLogin(data);
     } catch (err) {
       setError(err.message);
     }
   };
+
 
   return (
     <div className="login-container">
@@ -51,8 +60,10 @@ function LoginForm({ onLogin }) {
         <button type="submit">Login</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      <p>Belum punya akun? <a onClick={switchToRegister}>Daftar di sini</a></p>
     </div>
   );
 }
+
 
 export default LoginForm;
