@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   const groupMembers = [
-    "Julius Tegar", "Ivan Pratomo", "Jerico Ashiddqy", "Rajaswa Umar"
+    "Julius Tegar Aji", "Ivan Pratomo", "Jerico Ashiddqy", "Rajaswa Umar"
   ];
 
   return (
