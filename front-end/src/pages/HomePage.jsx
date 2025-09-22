@@ -110,11 +110,16 @@ const HomePage = () => {
     navigate(`/products?category=${categoryId}`);
   };
 
-  // (BARU) Handle clear search
+  // Handle clear search
   const handleClearSearch = () => {
     setSearchQuery('');
     fetchRecommendations();
-    searchInputRef.current?.focus();
+    searchInputRef.current?.focus(); 
+  };
+
+  // Fungsi untuk escape karakter spesial di RegExp
+  const escapeRegExp = (string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
   // Fungsi untuk highlight teks yang cocok
@@ -122,7 +127,8 @@ const HomePage = () => {
     if (!query) {
       return text;
     }
-    const regex = new RegExp(`(${query})`, 'gi');
+    const safeQuery = escapeRegExp(query);
+    const regex = new RegExp(`(${safeQuery})`, 'gi');
     const parts = text.split(regex);
     
     return (
@@ -137,7 +143,7 @@ const HomePage = () => {
   return (
     <div className="container mx-auto p-4 md:p-8">
       {/* Hero Section */}
-      <div className="text-center py-10 md:py-16 bg-gray-100 rounded-lg mb-5">
+      <div className="text-center py-10 md:py-16 bg-gray-100 rounded-lg mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
           Selamat Datang di CampusMart!
         </h1>
