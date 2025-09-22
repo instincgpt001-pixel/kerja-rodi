@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Import komponen dan halaman
 import Navbar from './components/Navbar';
+import Footer from './components/Footer'; 
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -11,9 +12,9 @@ import CartPage from './pages/CartPage';
 function App() {
   return (
     <Router>
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gray-50 min-h-screen flex flex-col">
         <Navbar />
-        <main>
+        <main className="flex-grow"> 
           <Routes>
             {/* Rute Utama */}
             <Route path="/" element={<HomePage />} />
@@ -25,10 +26,9 @@ function App() {
             {/* Rute Keranjang */}
             <Route path="/cart" element={<CartPage />} />
 
-            {/* Tambahkan rute lain di sini nanti, seperti detail produk */}
-            {/* <Route path="/product/:id" element={<ProductDetailPage />} /> */}
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );

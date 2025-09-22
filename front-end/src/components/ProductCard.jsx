@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProductCard = ({ product }) => {
-  const imageUrl = `http://localhost:8000/public/images/products/${product.image}`;
+  const imageUrl = `http://localhost:8000/images/products/${product.image}`;
 
   return (
     <div className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
