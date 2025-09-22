@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    /**
+     * Menyimpan produk baru.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -37,5 +40,57 @@ class ProductController extends Controller
 
 
         return response()->json($product, 201);
+    }
+
+    /**
+     * Memberikan 5 rekomendasi produk acak saat search bar diklik.
+     */
+    public function recommendations()
+    {
+        $products = Product::where('is_active', true)->inRandomOrder()->limit(5)->get();
+        return response()->json($products);
+    }
+
+    /**
+     * Fitur live search, memberikan 5 produk sesuai input.
+     */
+    public function searchSuggestions(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (empty($query)) {
+            return $this->recommendations();
+        }
+
+        $products = Product::where('is_active', true)
+                            ->where('name', 'LIKE', "%{$query}%")
+                            ->orWhereHas('category', function ($q) use ($query) {
+                                $q->where('name', 'LIKE', "%{$query}%");
+                            })
+                            ->limit(5)
+                            ->get();
+
+        return response()->json($products);
+    }
+
+    /**
+     * Pencarian penuh saat pengguna menekan Enter.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (empty($query)) {
+            return response()->json([]);
+        }
+
+        $products = Product::where('is_active', true)
+                           ->where('name', 'LIKE', "%{$query}%")
+                           ->orWhereHas('category', function ($q) use ($query) {
+                               $q->where('name', 'LIKE', "%{$query}%");
+                           })
+                           ->get();
+
+        return response()->json($products);
     }
 }

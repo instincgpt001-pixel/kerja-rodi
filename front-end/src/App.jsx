@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
+import ProductListPage from './pages/ProductListPage';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
 
             {/* Rute Keranjang */}
             <Route path="/cart" element={<CartPage />} />
+
+            {/* Rute untuk hasil pencarian dan kategori */}
+            <Route path="/products" element={<ProductListPage />} />
 
           </Routes>
         </main>
