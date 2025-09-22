@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-// Komponen untuk Loading & Error (bisa dibuat file terpisah)
+// Komponen untuk Loading & Error
 const LoadingSpinner = () => <div className="text-center py-10"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div></div>;
 const ErrorMessage = ({ message }) => <div className="text-center py-10 px-6 bg-red-100 text-red-700 rounded-lg"><p>{message}</p></div>;
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cart, setCart] = useState(null); // Menyimpan objek cart lengkap
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,17 +19,16 @@ const CartPage = () => {
 
   const navigate = useNavigate();
 
-  // Fungsi untuk memuat data keranjang dari API
-  const fetchCartItems = async () => {
+  // Muat data keranjang dari API (/api/cart)
+  const fetchCart = async () => {
+    setLoading(true);
     try {
-        const response = await fetch('http://localhost:8000/api/orders', {
-          credentials: 'include', 
-        });
-      if (!response.ok) {
-        throw new Error('Gagal mengambil data keranjang. Silakan login terlebih dahulu.');
-      }
-      const data = await response.json();
-      setCartItems(data);
+      const res = await fetch('http://localhost:8000/api/cart', {
+        credentials: 'include',
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Gagal mengambil data keranjang.');
+      setCart(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -36,111 +36,112 @@ const CartPage = () => {
     }
   };
 
-  // Panggil fetchCartItems saat komponen dimuat pertama kali
   useEffect(() => {
-    fetchCartItems();
+    fetchCart();
   }, []);
 
-  // Fungsi untuk menangani update jumlah item
+  // Update jumlah item
   const handleUpdateQuantity = async (itemId, newQty) => {
-    if (newQty < 1) return; 
-
+    if (newQty < 1) return;
     try {
-      const response = await fetch(`http://localhost:8000/api/cart/items/${itemId}`, {
+      const res = await fetch(`http://localhost:8000/api/cart/items/${itemId}`, {
         method: 'PUT',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ qty: newQty }),
       });
-      if (!response.ok) throw new Error('Gagal memperbarui jumlah item.');
-      
-      // Perbarui state secara lokal agar UI responsif
-      setCartItems(currentItems =>
-        currentItems.map(item =>
-          item.id === itemId ? { ...item, qty: newQty } : item
-        )
-      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Gagal memperbarui jumlah.');
+
+      // data diasumsikan item yang diupdate
+      const updatedItem = data;
+      setCart(currentCart => currentCart ? {
+        ...currentCart,
+        items: currentCart.items.map(item => item.id === itemId ? updatedItem : item)
+      } : currentCart);
+      toast.success('Jumlah item diperbarui!');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
-  // Fungsi untuk menghapus item dari keranjang
+  // Hapus item dari keranjang
   const handleDeleteItem = async (itemId) => {
     if (!window.confirm("Apakah Anda yakin ingin menghapus item ini?")) return;
     
     try {
-      const response = await fetch(`http://localhost:8000/api/cart/items/${itemId}`, {
+      const res = await fetch(`http://localhost:8000/api/cart/items/${itemId}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: { 'Accept': 'application/json' },
       });
-      if (!response.ok) throw new Error('Gagal menghapus item.');
-      
-      // Hapus item dari state lokal
-      setCartItems(currentItems => currentItems.filter(item => item.id !== itemId));
-      // Hapus juga dari item yang dipilih jika ada
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.message || 'Gagal menghapus item.');
+
+      setCart(currentCart => currentCart ? {
+        ...currentCart,
+        items: currentCart.items.filter(item => item.id !== itemId)
+      } : currentCart);
+
       setSelectedItems(currentSelected => {
         const newSelected = new Set(currentSelected);
         newSelected.delete(itemId);
         return newSelected;
       });
+
+      toast.success('Item berhasil dihapus.');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
-  // Fungsi untuk menangani pemilihan item (checkbox)
+  // Pilih / batal pilih item
   const handleSelectItem = (itemId) => {
     setSelectedItems(currentSelected => {
       const newSelected = new Set(currentSelected);
-      if (newSelected.has(itemId)) {
-        newSelected.delete(itemId);
-      } else {
-        newSelected.add(itemId);
-      }
+      if (newSelected.has(itemId)) newSelected.delete(itemId);
+      else newSelected.add(itemId);
       return newSelected;
     });
   };
 
-  // Hitung total harga hanya untuk item yang dipilih
+  // Hitung total harga item terpilih
   const totalHarga = useMemo(() => {
-    return cartItems.reduce((total, item) => {
-      if (selectedItems.has(item.id)) {
-        return total + (item.product.price * item.qty);
-      }
+    if (!cart || !cart.items) return 0;
+    return cart.items.reduce((total, item) => {
+      if (selectedItems.has(item.id)) return total + (item.product.price * item.qty);
       return total;
     }, 0);
-  }, [cartItems, selectedItems]);
+  }, [cart, selectedItems]);
 
-  // Fungsi untuk menangani proses checkout
+  // Proses checkout
   const handleConfirmCheckout = async () => {
     if (addressText.trim() === '') {
-      alert("Alamat pengiriman tidak boleh kosong.");
+      toast.error("Alamat pengiriman tidak boleh kosong.");
       return;
     }
 
     setIsCheckingOut(true);
     try {
-      const response = await fetch('http://localhost:8000/api/checkout', {
+      const res = await fetch('http://localhost:8000/api/checkout', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
           address_text: addressText,
           item_ids: Array.from(selectedItems),
         }),
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Gagal membuat pesanan.');
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Gagal membuat pesanan.');
-      }
-      
-      alert('Pesanan berhasil dibuat!');
-      setCheckoutModalOpen(false); 
-      fetchCartItems();
-      setSelectedItems(new Set()); 
-      navigate('/orders'); 
+      toast.success('Pesanan berhasil dibuat!');
+      setCheckoutModalOpen(false);
+      setSelectedItems(new Set());
+      await fetchCart(); // refresh keranjang
+      navigate('/orders');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     } finally {
       setIsCheckingOut(false);
     }
@@ -148,6 +149,8 @@ const CartPage = () => {
 
   if (loading) return <LoadingSpinner />;
   if (error) return <div className="container mx-auto p-8"><ErrorMessage message={error} /></div>;
+
+  const cartItems = cart?.items || [];
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -161,17 +164,16 @@ const CartPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Daftar Item Keranjang */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map(item => (
-                <div key={item.id} className="flex items-center bg-white p-4 rounded-lg shadow-md transition-all">
+                <div key={item.id} className="flex items-center bg-white p-4 rounded-lg shadow-md">
                   <input
                     type="checkbox"
-                    className="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 mr-4"
+                    className="form-checkbox h-5 w-5 text-blue-600 rounded mr-4"
                     checked={selectedItems.has(item.id)}
                     onChange={() => handleSelectItem(item.id)}
                   />
-                  <img src={`http://localhost:8000/storage/products/${item.product.image}`} alt={item.product.name} className="w-20 h-20 object-cover rounded-md" />
+                  <img src={`http://localhost:8000/images/products/${item.product.image}`} alt={item.product.name} className="w-20 h-20 object-cover rounded-md" />
                   <div className="flex-grow mx-4">
                     <p className="font-semibold text-lg text-gray-800">{item.product.name}</p>
                     <p className="text-gray-600 font-bold">Rp {Number(item.product.price).toLocaleString('id-ID')}</p>
@@ -181,7 +183,10 @@ const CartPage = () => {
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) => handleUpdateQuantity(item.id, parseInt(e.target.value, 10))}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value, 10);
+                        if (!Number.isNaN(val)) handleUpdateQuantity(item.id, val);
+                      }}
                       className="w-12 text-center border rounded"
                     />
                     <button onClick={() => handleUpdateQuantity(item.id, item.qty + 1)} className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">+</button>
@@ -197,7 +202,6 @@ const CartPage = () => {
               ))}
             </div>
 
-            {/* Ringkasan Belanja */}
             <div className="lg:col-span-1">
               <div className="bg-white p-6 rounded-lg shadow-md sticky top-28">
                 <h2 className="text-xl font-bold border-b pb-4 mb-4">Ringkasan Belanja</h2>
@@ -218,7 +222,6 @@ const CartPage = () => {
         )}
       </div>
 
-      {/* Modal Checkout */}
       {isCheckoutModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
@@ -232,7 +235,7 @@ const CartPage = () => {
                 placeholder="Masukkan alamat lengkap Anda..."
                 value={addressText}
                 onChange={(e) => setAddressText(e.target.value)}
-              ></textarea>
+              />
             </div>
             <div className="flex justify-end space-x-4">
               <button

@@ -6,6 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -120,6 +121,18 @@ function App() {
           </main>
           <Footer />
         </div>
+        <Toaster 
+          position="top-right" 
+          toastOptions={{
+            style: {
+              marginTop: '40px'
+            },
+          }} 
+          containerStyle={{
+            top: 40,
+            right: 20,
+          }}
+        />
       </AuthProvider>
     </Router>
   );
