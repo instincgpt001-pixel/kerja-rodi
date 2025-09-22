@@ -66,7 +66,7 @@ const LoginPage = () => {
               autoComplete="email"
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
-              placeholder="anda@email.com"
+              placeholder="Masukkan email Anda"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -81,7 +81,7 @@ const LoginPage = () => {
               autoComplete="current-password"
               required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
-              placeholder="••••••••"
+              placeholder="Masukkan password Anda"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

@@ -1,21 +1,35 @@
 <?php
 
-
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController; 
+use App\Models\Product;
 
 
 // Rute Otentikasi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:web');
-Route::middleware('auth:web')->get('/user', function (Request $request) {
-    return $request->user();
+
+// Rute yang memerlukan otentikasi
+Route::middleware('auth:web')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // RUTE KERANJANG (CART)
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::put('/cart/items/{item}', [CartController::class, 'update']);
+    Route::delete('/cart/items/{item}', [CartController::class, 'destroy']);
+
+    // RUTE PESANAN (ORDER)
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/checkout', [OrderController::class, 'store']);
 });
 
 // Rute Produk
@@ -41,7 +55,3 @@ Route::get('/categories/random', [CategoryController::class, 'getRandomCategorie
 
 // 2. Menampilkan produk berdasarkan ID kategori
 Route::get('/categories/{category}/products', [CategoryController::class, 'showProductsByCategory']);
-
-
-
-

@@ -8,7 +8,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
-import ProductListPage from './pages/ProductListPage';
+import ProductListPage from './pages/ProductListPage'; 
+import OrderPage from './pages/OrderPage';
 
 function App() {
   return (
