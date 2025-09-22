@@ -9,11 +9,11 @@ const Footer = () => {
     <footer className="bg-gray-100 border-t mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Tim Pengembang</h3>
-          <p className="text-gray-500 mb-4">Website E-commerce Kelompok 9</p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-1">Tim Pengembang</h3>
+          <p className="text-gray-500 mb-4">Team9Devs</p>
           <hr className="my-6" />
           <div className="mb-4">
-            <h4 className="font-medium text-gray-700 mb-3">Anggota Kelompok:</h4>
+            <h4 className="font-medium text-gray-700 mb-1">Anggota Kelompok:</h4>
             <div className="flex flex-wrap justify-center gap-4">
               {groupMembers.map((member, index) => (
                 <span key={index} className="bg-white px-3 py-1 rounded-full text-sm border text-gray-600">
