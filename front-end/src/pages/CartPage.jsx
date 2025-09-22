@@ -139,9 +139,10 @@ const CartPage = () => {
       if (!res.ok) throw new Error(data?.message || 'Gagal membuat pesanan.');
 
       toast.success('Pesanan berhasil dibuat!');
+      updateCartCount();
       setCheckoutModalOpen(false);
       setSelectedItems(new Set());
-      await fetchCart(); // refresh keranjang
+      await fetchCart(); 
       navigate('/orders');
     } catch (err) {
       toast.error(err.message);

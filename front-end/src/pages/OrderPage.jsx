@@ -77,7 +77,7 @@ const OrderPage = () => {
                      <span className={`px-3 py-1 text-sm font-semibold rounded-full ${getStatusClass(order.status)}`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
-                     <p className="font-bold text-lg text-gray-800 mt-1">Rp {Number(order.total_price).toLocaleString('id-ID')}</p>
+                     <p className="font-bold text-lg text-gray-800 mt-1">Rp {Number(order.total).toLocaleString('id-ID')}</p>
                   </div>
                 </div>
 
@@ -91,7 +91,7 @@ const OrderPage = () => {
                   <div className="space-y-4">
                     {order.items.map(item => (
                       <div key={item.id} className="flex items-center">
-                        <img src={`http://localhost:8000/storage/products/${item.product.image}`} alt={item.product.name} className="w-16 h-16 object-cover rounded-md" />
+                        <img src={`http://localhost:8000/images/products/${item.product.image}`} alt={item.product.name} className="w-16 h-16 object-cover rounded-md" />
                         <div className="flex-grow mx-4">
                           <p className="font-semibold text-gray-800">{item.product.name}</p>
                           <p className="text-sm text-gray-500">{item.qty} x Rp {Number(item.price).toLocaleString('id-ID')}</p>

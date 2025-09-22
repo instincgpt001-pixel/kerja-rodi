@@ -32,11 +32,11 @@ const Navbar = () => {
             </Link>
 
             {/* Link Keranjang dengan Counter */}
-            <Link to="/cart" className="relative p-2">
+            <Link to="/cart" className="relative p-2 hover:bg-blue-200 rounded-full transition group">
               <img
                 src={cartIcon}
                 alt="Cart"
-                className="h-6 w-6 filter brightness-0 invert"
+                className="h-6 w-6 filter brightness-0 invert group-hover:invert-0 group-hover:brightness-100"
               />
               {/* Tampilkan counter hanya jika user login dan ada item di keranjang */}
               {user && cartCount > 0 && (

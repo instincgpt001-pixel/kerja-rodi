@@ -48,10 +48,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('total', 12, 2);
-            $table->string('status')->default('pending');
+            $table->decimal('total', 10, 2);
+            $table->string('status');
             $table->text('address_text');
-            $table->timestamps();
+            $table->timestamps(); 
         });
 
         // 3. Tabel yang bergantung pada tabel di langkah 1 & 2
