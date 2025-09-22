@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAuth } from '../App';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { updateCartCount } = useAuth();
   const imageUrl = `http://localhost:8000/images/products/${product.image}`;
 
   const handleAddToCart = async (productId) => {
@@ -35,6 +37,7 @@ const ProductCard = ({ product }) => {
         position: 'top-right',
         duration: 3000
       });
+      updateCartCount();
 
     } catch (error) {
       console.error('Error adding to cart:', error);

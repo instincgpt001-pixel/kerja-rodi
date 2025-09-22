@@ -5,7 +5,8 @@ import cartIcon from "../assets/icons/cart.svg";
 import userIcon from "../assets/icons/user.svg";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  // Ambil user dan cartCount dari context global
+  const { user, logout, cartCount } = useAuth();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -30,13 +31,19 @@ const Navbar = () => {
               Pesanan Saya
             </Link>
 
-            <Link to="/cart" className="relative p-2 hover:bg-blue-200 rounded-full transition group">
+            {/* Link Keranjang dengan Counter */}
+            <Link to="/cart" className="relative p-2">
               <img
                 src={cartIcon}
                 alt="Cart"
-                className="h-6 w-6 filter brightness-0 invert group-hover:invert-0 group-hover:brightness-100"
+                className="h-6 w-6 filter brightness-0 invert"
               />
-              {/* <span className="absolute top-0 right-0 block h-4 w-4 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500 text-white text-xs text-center">3</span> */}
+              {/* Tampilkan counter hanya jika user login dan ada item di keranjang */}
+              {user && cartCount > 0 && (
+                <span className="absolute top-0 right-0 block h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-white text-xs flex items-center justify-center transform translate-x-1/4 -translate-y-1/4">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {user ? (

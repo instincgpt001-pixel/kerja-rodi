@@ -23,6 +23,26 @@ const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [cartCount, setCartCount] = useState(0);
+
+  // Fungsi untuk update cart count dari komponen lain
+  const updateCartCount = async () => {
+    if (!user) {
+      setCartCount(0);
+      return;
+    }
+    try {
+      const res = await fetch("http://localhost:8000/api/cart", { credentials: "include" });
+      if (res.ok) {
+        const data = await res.json();
+        setCartCount(data.items?.length || 0);
+      } else {
+        setCartCount(0);
+      }
+    } catch (err) {
+      setCartCount(0);
+    }
+  };
 
   useEffect(() => {
     // Cek status login saat aplikasi pertama kali dimuat
@@ -35,12 +55,19 @@ const AuthProvider = ({ children }) => {
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
+          const cartRes = await fetch("http://localhost:8000/api/cart", { credentials: "include" });
+          if (cartRes.ok) {
+            const cartData = await cartRes.json();
+            setCartCount(cartData.items?.length || 0);
+          }
         } else {
           setUser(null);
+          setCartCount(0);
         }
       } catch (error) {
         console.error("Error checking login status:", error);
         setUser(null);
+        setCartCount(0);
       } finally {
         setLoading(false);
       }
@@ -51,6 +78,7 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setUser(userData);
+    updateCartCount();
   };
 
   const logout = async () => {
@@ -66,6 +94,7 @@ const AuthProvider = ({ children }) => {
         console.error("Logout failed:", error);
     } finally {
         setUser(null); 
+        setCartCount(0);
     }
   };
 
@@ -82,7 +111,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, cartCount, updateCartCount }}>
       {children}
     </AuthContext.Provider>
   );

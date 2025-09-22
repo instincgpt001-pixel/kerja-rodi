@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAuth } from '../App';
 
 // Komponen untuk Loading & Error
 const LoadingSpinner = () => <div className="text-center py-10"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div></div>;
@@ -18,6 +19,7 @@ const CartPage = () => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const navigate = useNavigate();
+  const { updateCartCount } = useAuth();
 
   // Muat data keranjang dari API (/api/cart)
   const fetchCart = async () => {
@@ -90,6 +92,7 @@ const CartPage = () => {
       });
 
       toast.success('Item berhasil dihapus.');
+      updateCartCount();
     } catch (err) {
       toast.error(err.message);
     }
@@ -161,6 +164,12 @@ const CartPage = () => {
           <div className="text-center py-10 px-6 bg-white rounded-lg shadow-md">
             <h2 className="text-xl font-semibold text-gray-700">Keranjang Anda kosong</h2>
             <p className="text-gray-500 mt-2">Ayo mulai belanja dan temukan barang favoritmu!</p>
+            <button
+              onClick={() => navigate('/')}
+              className="mt-4 inline-block px-5 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
+            >
+              Mulai Belanja
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -53,6 +53,12 @@ const OrderPage = () => {
           <div className="text-center py-10 px-6 bg-white rounded-lg shadow-md">
             <h2 className="text-xl font-semibold text-gray-700">Anda belum memiliki pesanan</h2>
             <p className="text-gray-500 mt-2">Semua pesanan yang Anda buat akan muncul di sini.</p>
+            <button
+              onClick={() => navigate('/')}
+              className="mt-4 inline-block px-5 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
+            >
+              Mulai Belanja
+            </button>
           </div>
         ) : (
           <div className="space-y-6">
