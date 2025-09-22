@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="text-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-1">Tim Pengembang</h3>
           <p className="text-gray-500 mb-4">Team9Devs</p>
-          <hr className="my-6" />
+          <hr className="my-0" />
           <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-1">Anggota Kelompok:</h4>
             <div className="flex flex-wrap justify-center gap-4">
@@ -22,7 +22,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          <hr className="my-6" />
+          <hr className="my-3" />
           <div className="text-sm text-gray-500">
             <p>&copy; 2025 CampusMart. Dibuat sebagai tugas kelompok.</p>
           </div>

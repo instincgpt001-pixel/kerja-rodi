@@ -137,7 +137,7 @@ const HomePage = () => {
   return (
     <div className="container mx-auto p-4 md:p-8">
       {/* Hero Section */}
-      <div className="text-center py-10 md:py-16 bg-gray-100 rounded-lg mb-12">
+      <div className="text-center py-10 md:py-16 bg-gray-100 rounded-lg mb-5">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
           Selamat Datang di CampusMart!
         </h1>
