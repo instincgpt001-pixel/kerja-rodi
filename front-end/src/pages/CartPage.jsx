@@ -1,5 +1,3 @@
-// front-end/src/pages/CartPage.jsx
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +21,9 @@ const CartPage = () => {
   // Fungsi untuk memuat data keranjang dari API
   const fetchCartItems = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/cart');
+        const response = await fetch('http://localhost:8000/api/orders', {
+          credentials: 'include', 
+        });
       if (!response.ok) {
         throw new Error('Gagal mengambil data keranjang. Silakan login terlebih dahulu.');
       }
@@ -135,10 +135,10 @@ const CartPage = () => {
       }
       
       alert('Pesanan berhasil dibuat!');
-      setCheckoutModalOpen(false); // Tutup modal
-      fetchCartItems(); // Muat ulang keranjang
-      setSelectedItems(new Set()); // Kosongkan item terpilih
-      navigate('/orders'); // Arahkan ke halaman pesanan
+      setCheckoutModalOpen(false); 
+      fetchCartItems();
+      setSelectedItems(new Set()); 
+      navigate('/orders'); 
     } catch (err) {
       alert(err.message);
     } finally {

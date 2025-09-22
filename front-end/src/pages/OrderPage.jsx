@@ -12,7 +12,9 @@ const OrderPage = () => {
   // Fungsi untuk mengambil riwayat pesanan
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/orders');
+        const response = await fetch('http://localhost:8000/api/orders', {
+          credentials: 'include', 
+        });
       if (!response.ok) {
         throw new Error('Gagal memuat riwayat pesanan. Silakan login terlebih dahulu.');
       }
