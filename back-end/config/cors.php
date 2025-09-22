@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'login', 'register', 'logout', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
@@ -25,7 +25,7 @@ return [
      * Alamat server Vite/React Anda secara default adalah http://localhost:5173
      */
     'allowed_origins' => [
-        'http://localhost:5173',
+        'http://localhost:5173', 
     ],
 
     /*

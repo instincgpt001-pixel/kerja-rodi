@@ -23,7 +23,6 @@ const CartPage = () => {
   // Fungsi untuk memuat data keranjang dari API
   const fetchCartItems = async () => {
     try {
-      // Ganti URL ini jika base URL Anda berbeda
       const response = await fetch('http://localhost:8000/api/cart');
       if (!response.ok) {
         throw new Error('Gagal mengambil data keranjang. Silakan login terlebih dahulu.');
@@ -44,7 +43,7 @@ const CartPage = () => {
 
   // Fungsi untuk menangani update jumlah item
   const handleUpdateQuantity = async (itemId, newQty) => {
-    if (newQty < 1) return; // Kuantitas tidak boleh kurang dari 1
+    if (newQty < 1) return; 
 
     try {
       const response = await fetch(`http://localhost:8000/api/cart/items/${itemId}`, {

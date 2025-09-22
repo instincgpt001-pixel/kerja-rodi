@@ -49,8 +49,6 @@ const ProductListPage = () => {
         setTitle(`Hasil Pencarian untuk: "${query}"`);
         url = `http://localhost:8000/api/products/search?q=${query}`;
       } else if (categoryId) {
-        // Asumsi kita perlu nama kategori untuk judul, kita bisa fetch atau bawa dari state sebelumnya
-        // Untuk simple, kita buat judul generik
         setTitle(`Produk dalam Kategori`);
         url = `http://localhost:8000/api/categories/${categoryId}/products`;
       } else {

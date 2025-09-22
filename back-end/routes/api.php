@@ -13,13 +13,14 @@ use App\Models\Product;
 // Rute Otentikasi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:web');
 
 // Rute yang memerlukan otentikasi
 Route::middleware('auth:web')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     // RUTE KERANJANG (CART)
     Route::get('/cart', [CartController::class, 'index']);

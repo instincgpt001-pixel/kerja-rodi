@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
+import { useAuth } from '../App'; 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,12 +9,13 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth(); 
 
-  // Efek ini berjalan saat komponen dimuat untuk mengisi email dari halaman registrasi
+  // Kode Anda ini sudah benar
   useEffect(() => {
     if (location.state?.email) {
       setEmail(location.state.email);
-      setSuccessMessage(location.state.message); // Menampilkan pesan sukses dari registrasi
+      setSuccessMessage(location.state.message);
     }
   }, [location.state]);
 
@@ -30,7 +31,7 @@ const LoginPage = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        credentials: 'include', // Penting untuk mengirim cookie
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
@@ -40,8 +41,8 @@ const LoginPage = () => {
         throw new Error(data.message || 'Login gagal! Periksa email/password.');
       }
 
-      // Login berhasil, navigasi ke homepage
-      // Di langkah selanjutnya kita akan menyimpan info user secara global
+      login(data.user); 
+      
       navigate('/');
 
     } catch (err) {
