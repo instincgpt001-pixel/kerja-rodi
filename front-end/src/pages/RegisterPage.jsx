@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import EyeIcon from '../assets/icons/EyeIcon';
+import EyeOffIcon from '../assets/icons/EyeOffIcon';
+
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -39,7 +44,6 @@ const RegisterPage = () => {
         throw new Error(data.message || 'Registrasi gagal!');
       }
 
-      // Registrasi berhasil, navigasi ke halaman login dengan membawa state email
       navigate('/login', { state: { email: email, message: 'Registrasi berhasil! Silakan login.' } });
 
     } catch (err) {
@@ -81,32 +85,62 @@ const RegisterPage = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+
+          {/* PERUBAHAN 1 */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" aclassName="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              required
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative mt-1">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
+                onMouseDown={() => setShowPassword(true)}
+                onMouseUp={() => setShowPassword(false)}
+                onMouseLeave={() => setShowPassword(false)}
+              >
+                {/* Ikon ditukar */}
+                {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+              </button>
+            </div>
           </div>
+          
+          {/* PERUBAHAN 2 */}
           <div>
             <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700">
               Konfirmasi Password
             </label>
-            <input
-              id="password_confirmation"
-              type="password"
-              required
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-            />
+            <div className="relative mt-1">
+              <input
+                id="password_confirmation"
+                type={showPasswordConfirmation ? 'text' : 'password'}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
+                onMouseDown={() => setShowPasswordConfirmation(true)}
+                onMouseUp={() => setShowPasswordConfirmation(false)}
+                onMouseLeave={() => setShowPasswordConfirmation(false)}
+              >
+                {/* Ikon ditukar */}
+                {showPasswordConfirmation ? <EyeIcon /> : <EyeOffIcon />}
+              </button>
+            </div>
           </div>
+          {/* AKHIR PERUBAHAN */}
+
           <button
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"

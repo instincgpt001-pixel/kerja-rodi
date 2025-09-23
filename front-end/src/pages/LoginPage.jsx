@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../App'; 
+import { useAuth } from '../App';
+import EyeIcon from '../assets/icons/EyeIcon';
+import EyeOffIcon from '../assets/icons/EyeOffIcon';
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
-  // Kode Anda ini sudah benar
   useEffect(() => {
     if (location.state?.email) {
       setEmail(location.state.email);
@@ -41,8 +44,8 @@ const LoginPage = () => {
         throw new Error(data.message || 'Login gagal! Periksa email/password.');
       }
 
-      login(data.user); 
-      
+      login(data.user);
+
       navigate('/');
 
     } catch (err) {
@@ -72,21 +75,37 @@ const LoginPage = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          
+          {/* PERUBAHAN DI SINI */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
-              placeholder="Masukkan password Anda"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative mt-1">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                placeholder="Masukkan password Anda"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
+                onMouseDown={() => setShowPassword(true)}
+                onMouseUp={() => setShowPassword(false)}
+                onMouseLeave={() => setShowPassword(false)}
+              >
+                {/* Ikon ditukar */}
+                {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+              </button>
+            </div>
           </div>
+          {/* AKHIR PERUBAHAN */}
+
           <button
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
