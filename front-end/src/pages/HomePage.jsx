@@ -210,7 +210,7 @@ const HomePage = () => {
       {/* Categories Section */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Kategori Populer</h2>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-start gap-3">
           {categories.map(category => (
             <button
               key={category.id}
