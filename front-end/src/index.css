@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Tambahkan 5 baris ini */
+@layer base {
+  body {
+    @apply bg-gray-100; /* atau bg-gray-200 jika ingin sedikit lebih gelap */
+  }
+}
+
+.shadow-top-thin {
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+}

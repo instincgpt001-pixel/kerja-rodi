@@ -216,14 +216,14 @@ const HomePage = () => {
       </div>
       
       {/* Categories Section */}
-      <div className="mb-12">
+      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Kategori Populer:</h2>
         <div className="flex flex-wrap justify-start gap-3">
           {categories.map(category => (
             <button
               key={category.id}
               onClick={() => handleCategoryClick(category.id)}
-              className="px-6 py-2 bg-white border-2 border-gray-200 rounded-full text-gray-700 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-300 shadow-sm"
+              className="px-6 py-2 bg-gray-100 border border-gray-200 rounded-full text-gray-700 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-300"
             >
               {category.name}
             </button>
@@ -232,16 +232,18 @@ const HomePage = () => {
       </div>
 
       {/* Initial Product List */}
-      <h2 className="text-4xl font-bold mb-4 text-gray-800">Produk yang Tersedia:</h2>
-      {loading && <p className="text-center">Memuat...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
-      {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {initialProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">Produk yang Tersedia:</h2>
+        {loading && <p className="text-center">Memuat...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+        {!loading && !error && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {initialProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
