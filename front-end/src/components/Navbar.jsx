@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../App";
 import cartIcon from "../assets/icons/cart.svg";
 import userIcon from "../assets/icons/user.svg";
+import WebLogo from '../assets/icon-web-shopping.svg';
 
 const Navbar = () => {
   // Ambil user dan cartCount dari context global
@@ -21,9 +22,12 @@ const Navbar = () => {
       <div className="container mx-auto px-3 py-1">
         <div className="flex justify-between items-center">
           {/* Brand Name */}
-          <Link to="/" className="text-white text-2xl font-bold">
+        <Link to="/" className="flex items-center">
+          <img src={WebLogo} alt="CampusMart Logo" className="h-10 w-auto mr-1 filter invert" />
+          <span className="text-2xl font-bold text-white">
             CampusMart
-          </Link>
+          </span>
+        </Link>
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-6">
