@@ -6,7 +6,6 @@ import userIcon from "../assets/icons/user.svg";
 import WebLogo from '../assets/icon-web-shopping.svg';
 
 const Navbar = () => {
-  // Ambil user dan cartCount dari context global
   const { user, logout, cartCount } = useAuth();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -17,17 +16,19 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const logoLinkDestination = user && user.role === 'admin' ? '/admin' : '/';
+
   return (
     <nav className="bg-gray-800 p-4 sticky top-0 z-50">
       <div className="container mx-auto px-3 py-1">
         <div className="flex justify-between items-center">
           {/* Brand Name */}
-        <Link to="/" className="flex items-center">
-          <img src={WebLogo} alt="CampusMart Logo" className="h-10 w-auto mr-1 filter invert" />
-          <span className="text-2xl font-bold text-white">
-            CampusMart
-          </span>
-        </Link>
+          <Link to={logoLinkDestination} className="flex items-center">
+            <img src={WebLogo} alt="CampusMart Logo" className="h-10 w-auto mr-1 filter invert" />
+            <span className="text-2xl font-bold text-white">
+              CampusMart
+            </span>
+          </Link>
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-6">
