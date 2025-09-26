@@ -26,13 +26,19 @@ const ProductForm = () => {
                 setCategories(catData);
 
                 if (isEditing) {
-                    const prodRes = await fetch(`http://localhost:8000/api/products`);
+                    const prodRes = await fetch(`http://localhost:8000/api/admin/products`, {
+                        credentials: 'include'
+                    });
                     const allProducts = await prodRes.json();
                     const currentProduct = allProducts.find(p => p.id === parseInt(productId));
-                    if(currentProduct) setProduct(currentProduct);
+                    
+                    if(currentProduct) {
+                        currentProduct.is_active = Boolean(currentProduct.is_active);
+                        setProduct(currentProduct);
+                    }
                 }
             } catch (error) {
-                toast.error('Gagal memuat data.');
+                toast.error('Gagal memuat data awal.');
             } finally {
                 setLoading(false);
             }
@@ -66,25 +72,25 @@ const ProductForm = () => {
             formData.append('image', imageFile);
         }
         
-        // Untuk update, kita tambahkan method spoofing
         if(isEditing) {
             formData.append('_method', 'POST');
         }
 
         const url = isEditing
-            ? `http://localhost:8000/api/products/${productId}`
-            : 'http://localhost:8000/api/products';
-        
-        const method = 'POST'; // Selalu POST untuk FormData
+            ? `http://localhost:8000/api/admin/products/${productId}` 
+            : 'http://localhost:8000/api/admin/products';            
 
         try {
             const res = await fetch(url, {
-                method: method,
+                method: 'POST',
                 credentials: 'include',
                 body: formData,
             });
 
-            if (!res.ok) throw new Error('Gagal menyimpan produk.');
+            if (!res.ok) {
+                 const errorData = await res.json();
+                 throw new Error(errorData.message || 'Gagal menyimpan produk. Cek kembali isian Anda.');
+            }
 
             toast.success(`Produk berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}!`);
             navigate('/admin/products');
