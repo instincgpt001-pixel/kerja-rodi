@@ -32,24 +32,28 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-6">
-            <Link to="/orders" className="text-white hover:text-blue-200 transition">
-              Pesanan Saya
-            </Link>
+            {user && user.role !== 'admin' && (
+              <>
+                <Link to="/orders" className="text-white hover:text-blue-200 transition">
+                  Pesanan Saya
+                </Link>
 
-            {/* Link Keranjang dengan Counter */}
-            <Link to="/cart" className="relative p-2 hover:bg-blue-200 rounded-full transition group">
-              <img
-                src={cartIcon}
-                alt="Cart"
-                className="h-6 w-6 filter brightness-0 invert group-hover:invert-0 group-hover:brightness-100"
-              />
-              {/* Tampilkan counter hanya jika user login dan ada item di keranjang */}
-              {user && cartCount > 0 && (
-                <span className="absolute top-0 right-0 block h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-white text-xs flex items-center justify-center transform translate-x-1/4 -translate-y-1/4">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+                {/* Link Keranjang dengan Counter */}
+                <Link to="/cart" className="relative p-2 hover:bg-blue-200 rounded-full transition group">
+                  <img
+                    src={cartIcon}
+                    alt="Cart"
+                    className="h-6 w-6 filter brightness-0 invert group-hover:invert-0 group-hover:brightness-100"
+                  />
+                  {/* Tampilkan counter hanya jika user login dan ada item di keranjang */}
+                  {cartCount > 0 && (
+                    <span className="absolute top-0 right-0 block h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-white text-xs flex items-center justify-center transform translate-x-1/4 -translate-y-1/4">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              </>
+            )}
 
             {user ? (
               <div className="relative">
