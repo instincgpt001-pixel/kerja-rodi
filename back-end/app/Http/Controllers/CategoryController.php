@@ -18,4 +18,15 @@ class CategoryController extends Controller
         $products = $category->products()->where('is_active', true)->get();
         return response()->json($products);
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|unique:categories,name|max:255',
+        ]);
+
+        $category = Category::create($validated);
+
+        return response()->json($category, 201); 
+    }
 }

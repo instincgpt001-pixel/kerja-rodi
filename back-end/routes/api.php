@@ -66,6 +66,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function () {
     Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
     Route::post('/products', [ProductController::class, 'store']);
+    Route::post('/categories', [CategoryController::class, 'store']);
 
     // Order Management
     Route::get('/orders', [AdminOrderController::class, 'index']);
