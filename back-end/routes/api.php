@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminOrderController;
 use App\Models\Product;
 
 
@@ -76,7 +77,6 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
     // Product Management
     Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
-
 
     // Order Management
     Route::get('/admin/orders', [AdminOrderController::class, 'index']);

@@ -86,9 +86,8 @@ const RegisterPage = () => {
             />
           </div>
 
-          {/* PERUBAHAN 1 */}
           <div>
-            <label htmlFor="password" aclassName="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <div className="relative mt-1">
@@ -107,13 +106,11 @@ const RegisterPage = () => {
                 onMouseUp={() => setShowPassword(false)}
                 onMouseLeave={() => setShowPassword(false)}
               >
-                {/* Ikon ditukar */}
                 {showPassword ? <EyeIcon /> : <EyeOffIcon />}
               </button>
             </div>
           </div>
           
-          {/* PERUBAHAN 2 */}
           <div>
             <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700">
               Konfirmasi Password
@@ -139,7 +136,6 @@ const RegisterPage = () => {
               </button>
             </div>
           </div>
-          {/* AKHIR PERUBAHAN */}
 
           <button
             type="submit"
