@@ -8,7 +8,9 @@ const AdminProductsPage = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/products');
+            const res = await fetch('http://localhost:8000/api/admin/products', {
+                credentials: 'include' 
+            });
             if(!res.ok) throw new Error('Gagal memuat produk');
             const data = await res.json();
             setProducts(data);
@@ -56,6 +58,7 @@ const AdminProductsPage = () => {
                             <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Nama Produk</th>
                             <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Harga</th>
                             <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Stok</th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Status</th>
                             <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Aksi</th>
                         </tr>
                     </thead>
@@ -65,6 +68,13 @@ const AdminProductsPage = () => {
                                 <td className="px-5 py-5 border-b text-sm">{product.name}</td>
                                 <td className="px-5 py-5 border-b text-sm">Rp {Number(product.price).toLocaleString('id-ID')}</td>
                                 <td className="px-5 py-5 border-b text-sm">{product.stock}</td>
+                                <td className="px-5 py-5 border-b text-sm">
+                                    {product.is_active ? (
+                                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">Aktif</span>
+                                    ) : (
+                                        <span className="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">Tidak Aktif</span>
+                                    )}
+                                </td>
                                 <td className="px-5 py-5 border-b text-sm">
                                     <Link to={`/admin/products/edit/${product.id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</Link>
                                     <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-900">Hapus</button>
