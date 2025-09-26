@@ -93,4 +93,40 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    /**
+     * Update produk spesifik dari db
+     */
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'is_active' => 'required|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $product->fill($request->except('image'));
+
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/products'), $imageName);
+            $product->image = $imageName;
+        }
+
+        $product->save();
+
+        return response()->json($product);
+    }
+
+    /**
+     * Hapus produk dari katalog
+     */
+    public function destroy(Product $product)
+    {
+        $product->delete();
+        return response()->json(['message' => 'Produk berhasil dihapus.']);
+    }
 }
