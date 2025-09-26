@@ -11,9 +11,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminOrderController;
 use App\Models\Product;
 
-
-
-
 // Rute Otentikasi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -71,6 +68,6 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
 
     // Order Management
-    Route::get('/admin/orders', [AdminOrderController::class, 'index']);
-    Route::patch('/admin/orders/{order}/status', [AdminOrderController::class, 'updateStatus']);
+    Route::get('/orders', [AdminOrderController::class, 'index']);
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus']);
 });
