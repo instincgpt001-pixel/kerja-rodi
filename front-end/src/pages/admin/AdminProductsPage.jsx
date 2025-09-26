@@ -55,27 +55,60 @@ const AdminProductsPage = () => {
                 <table className="min-w-full leading-normal">
                     <thead>
                         <tr>
-                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Nama Produk</th>
-                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Harga</th>
-                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Stok</th>
-                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Status</th>
-                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase">Aksi</th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Gambar
+                            </th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Nama Produk
+                            </th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Harga
+                            </th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Stok
+                            </th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th className="px-5 py-3 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {products.map(product => (
                             <tr key={product.id}>
-                                <td className="px-5 py-5 border-b text-sm">{product.name}</td>
-                                <td className="px-5 py-5 border-b text-sm">Rp {Number(product.price).toLocaleString('id-ID')}</td>
-                                <td className="px-5 py-5 border-b text-sm">{product.stock}</td>
-                                <td className="px-5 py-5 border-b text-sm">
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <div className="flex-shrink-0 w-16 h-16">
+                                        <img 
+                                            className="w-full h-full rounded-md object-cover" 
+                                            src={`http://localhost:8000/images/products/${product.image}`} 
+                                            alt={product.name} />
+                                    </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{product.name}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">Rp {Number(product.price).toLocaleString('id-ID')}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{product.stock}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     {product.is_active ? (
-                                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">Aktif</span>
+                                        <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                            <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                            <span className="relative">Aktif</span>
+                                        </span>
                                     ) : (
-                                        <span className="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">Tidak Aktif</span>
+                                        <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                            <span aria-hidden className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                            <span className="relative">Tidak Aktif</span>
+                                        </span>
                                     )}
                                 </td>
-                                <td className="px-5 py-5 border-b text-sm">
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <Link to={`/admin/products/edit/${product.id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</Link>
                                     <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-900">Hapus</button>
                                 </td>
