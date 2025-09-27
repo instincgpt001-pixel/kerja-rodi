@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ProductImage from '../components/ProductImage';
 
 // Komponen Pembantu
 const LoadingSpinner = () => <div className="text-center py-10"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div></div>;
@@ -91,7 +92,7 @@ const OrderPage = () => {
                   <div className="space-y-4">
                     {order.items.map(item => (
                       <div key={item.id} className="flex items-center">
-                        <img src={`http://localhost:8000/images/products/${item.product.image}`} alt={item.product.name} className="w-16 h-16 object-cover rounded-md" />
+                        <ProductImage product={item.product} className="w-16 h-16 object-cover rounded-md" />
                         <div className="flex-grow mx-4">
                           <p className="font-semibold text-gray-800">{item.product.name}</p>
                           <p className="text-sm text-gray-500">{item.qty} x Rp {Number(item.price).toLocaleString('id-ID')}</p>

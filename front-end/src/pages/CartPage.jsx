@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../App';
+import ProductImage from '../components/ProductImage';
 
 // Komponen untuk Loading & Error
 const LoadingSpinner = () => <div className="text-center py-10"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div></div>;
@@ -183,7 +184,7 @@ const CartPage = () => {
                     checked={selectedItems.has(item.id)}
                     onChange={() => handleSelectItem(item.id)}
                   />
-                  <img src={`http://localhost:8000/images/products/${item.product.image}`} alt={item.product.name} className="w-20 h-20 object-cover rounded-md" />
+                  <ProductImage product={item.product} className="w-20 h-20 object-cover rounded-md" />
                   <div className="flex-grow mx-4">
                     <p className="font-semibold text-lg text-gray-800">{item.product.name}</p>
                     <p className="text-gray-600 font-bold">Rp {Number(item.product.price).toLocaleString('id-ID')}</p>
