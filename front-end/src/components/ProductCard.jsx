@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../App';
 import ProductImage from './ProductImage';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, className, style }) => {
   const navigate = useNavigate();
   const { updateCartCount } = useAuth();
 
@@ -44,9 +44,12 @@ const ProductCard = ({ product }) => {
     }
   };
 
-
   return (
-    <div className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    // --- PERUBAHAN DI SINI ---
+    <div 
+      className={`border rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${className}`}
+      style={style}
+    >
       <div 
         onClick={() => navigate(`/products/${product.id}`)}
         className="cursor-pointer"

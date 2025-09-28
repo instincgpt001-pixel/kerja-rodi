@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import HeaderBackground from '../assets/header-background.svg';
+import { useFadeIn } from "../useFadeIn";
 
 const HomePage = () => {
   const [initialProducts, setInitialProducts] = useState([]);
@@ -11,6 +12,10 @@ const HomePage = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [isHeroVisible, heroRef] = useFadeIn(); 
+  const [isCategoriesVisible, categoriesRef] = useFadeIn();
+  const [isProductsVisible, productsRef] = useFadeIn();
 
   const navigate = useNavigate();
   const searchWrapperRef = useRef(null);
@@ -141,20 +146,30 @@ const HomePage = () => {
     );
   };
 
+  const welcomeText = "Selamat Datang di CampusMart!";
+  const subtitleText = "Semua kebutuhanmu ada di sini, langsung dari tangan pertama.";
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       {/* Hero Section */}
-      {/* 2. UBAH BAGIAN INI */}
       <div 
-        className="relative text-center py-20 md:py-30 bg-gray-100 rounded-lg mb-6 bg-cover bg-center"
+        ref={heroRef}
+        className={`relative text-center py-20 md:py-30 bg-gray-100 rounded-lg mb-6 bg-cover bg-center fade-in-section ${isHeroVisible ? 'is-visible' : ''}`}
         style={{ backgroundImage: `url(${HeaderBackground})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
-            Selamat Datang di CampusMart!
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 flex items-center justify-center">
+            <span className="animate-wave" aria-label={welcomeText}>
+              {welcomeText.split("").map((char, index) => (
+                <span key={index} style={{ animationDelay: `${index * 50}ms` }}>
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </span>
+            <span className="text-4xl md:text-5xl ml-4 animate-spin-pulse">🛍️</span>
           </h1>
-          <p className="text-lg text-gray-200 mb-8">
+          <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-pulse-zoom text-gray-200">
             Semua kebutuhanmu ada di sini, langsung dari tangan pertama.
           </p>
           
@@ -216,7 +231,10 @@ const HomePage = () => {
       </div>
       
       {/* Categories Section */}
-      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+      <div 
+        ref={categoriesRef} 
+        className={`bg-white p-6 rounded-lg shadow-lg mb-6 fade-in-section ${isCategoriesVisible ? 'is-visible' : ''}`}
+      >
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Kategori Populer:</h2>
         <div className="flex flex-wrap justify-start gap-3">
           {categories.map(category => (
@@ -232,14 +250,22 @@ const HomePage = () => {
       </div>
 
       {/* Initial Product List */}
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold mb-4 text-gray-800">Produk yang Tersedia:</h2>
+      <div 
+        ref={productsRef} 
+        className={`bg-white p-6 rounded-lg shadow-lg fade-in-section ${isProductsVisible ? 'is-visible' : ''}`}
+      >
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+          Produk yang Tersedia:
+        </h2>
         {loading && <p className="text-center">Memuat...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
         {!loading && !error && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {initialProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+            {initialProducts.map((product) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+              />
             ))}
           </div>
         )}

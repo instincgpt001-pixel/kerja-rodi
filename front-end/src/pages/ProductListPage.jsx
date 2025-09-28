@@ -32,24 +32,27 @@ const ProductListPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [title, setTitle] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryTitle, setCategoryTitle] = useState('');
+  
   const location = useLocation();
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
+      setSearchQuery('');
+      setCategoryTitle('');
 
       const params = new URLSearchParams(location.search);
       const query = params.get('q');
       const categoryId = params.get('category');
-
+      
       let url = '';
       if (query) {
-        setTitle(`Hasil Pencarian untuk: "${query}"`);
+        setSearchQuery(query);
         url = `http://localhost:8000/api/products/search?q=${query}`;
       } else if (categoryId) {
-        setTitle(`Produk dalam Kategori`);
         url = `http://localhost:8000/api/categories/${categoryId}/products`;
       } else {
         setLoading(false);
@@ -63,6 +66,11 @@ const ProductListPage = () => {
         }
         const data = await response.json();
         setProducts(data);
+
+        // Jika ini halaman kategori, cari nama kategorinya
+        if (categoryId && data.length > 0) {
+            setCategoryTitle(data[0].category.name);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -72,10 +80,29 @@ const ProductListPage = () => {
 
     fetchProducts();
   }, [location.search]);
+  
+  // Fungsi untuk render judul halaman
+  const renderTitle = () => {
+    if (searchQuery) {
+      return (
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">
+          Hasil Pencarian untuk: "<span className="text-blue-600 italic">{searchQuery}</span>"
+        </h1>
+      );
+    }
+    if (categoryTitle) {
+      return (
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">
+          Produk dalam Kategori: <span className="text-blue-600 italic">{categoryTitle}</span>
+        </h1>
+      );
+    }
+    return <h1 className="text-3xl font-bold mb-8 text-gray-800">Daftar Produk</h1>;
+  };
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">{title}</h1>
+      {renderTitle()}
 
       {loading && <LoadingSpinner />}
       {error && <ErrorMessage message={error} />}
@@ -84,7 +111,7 @@ const ProductListPage = () => {
         products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {products.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} searchQuery={searchQuery} />
             ))}
           </div>
         ) : (
