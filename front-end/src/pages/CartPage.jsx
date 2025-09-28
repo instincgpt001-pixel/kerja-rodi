@@ -189,8 +189,14 @@ const CartPage = () => {
                     <p className="font-semibold text-lg text-gray-800">{item.product.name}</p>
                     <p className="text-gray-600 font-bold">Rp {Number(item.product.price).toLocaleString('id-ID')}</p>
                   </div>
+                  {/* --- AWAL PERUBAHAN --- */}
                   <div className="flex items-center space-x-2">
-                    <button onClick={() => handleUpdateQuantity(item.id, item.qty - 1)} className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">-</button>
+                    <button 
+                      onClick={() => handleUpdateQuantity(item.id, item.qty - 1)} 
+                      className="px-3 py-1 bg-gray-200 rounded hover:bg-red-500 hover:text-white transition-colors duration-200"
+                    >
+                      -
+                    </button>
                     <input
                       type="number"
                       value={item.qty}
@@ -200,8 +206,14 @@ const CartPage = () => {
                       }}
                       className="w-12 text-center border rounded"
                     />
-                    <button onClick={() => handleUpdateQuantity(item.id, item.qty + 1)} className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">+</button>
+                    <button 
+                      onClick={() => handleUpdateQuantity(item.id, item.qty + 1)} 
+                      className="px-3 py-1 bg-gray-200 rounded hover:bg-green-500 hover:text-white transition-colors duration-200"
+                    >
+                      +
+                    </button>
                   </div>
+                  {/* --- AKHIR PERUBAHAN --- */}
                   <div className="text-right ml-4 flex-shrink-0 w-32">
                     <p className="text-gray-500 text-sm">Subtotal</p>
                     <p className="font-bold text-lg text-gray-800">Rp {Number(item.product.price * item.qty).toLocaleString('id-ID')}</p>
