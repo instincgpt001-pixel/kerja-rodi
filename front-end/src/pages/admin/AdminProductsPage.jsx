@@ -51,7 +51,7 @@ const AdminProductsPage = () => {
         <div className="container mx-auto px-4 sm:px-8">
             <div className="py-8">
                 <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
-                    <h2 className="text-2xl leading-tight">
+                    <h2 className="text-3xl font-bold leading-tight">
                         Kelola Produk
                     </h2>
                     <Link to="/admin/products/new" className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">

@@ -96,3 +96,19 @@
   transform: none;
   visibility: visible;
 }
+
+@keyframes pulse-zoom-yellow {
+  0%, 100% {
+    transform: scale(1);
+    color: #E5E7EB;
+  }
+  50% {
+    transform: scale(1.03);
+    color: #FBBF24;
+  }
+}
+
+.animate-pulse-zoom-yellow {
+  display: inline-block;
+  animation: pulse-zoom-yellow 4s ease-in-out infinite;
+}
