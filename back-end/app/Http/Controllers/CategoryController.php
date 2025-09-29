@@ -14,9 +14,13 @@ class CategoryController extends Controller
     }
 
     public function showProductsByCategory(Category $category)
-    {
+    { 
         $products = $category->products()->where('is_active', true)->get();
-        return response()->json($products);
+
+        return response()->json([
+            'category' => $category,
+            'products' => $products  
+        ]);
     }
 
     public function store(Request $request)

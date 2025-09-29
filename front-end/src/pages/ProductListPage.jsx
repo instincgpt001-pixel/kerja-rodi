@@ -67,10 +67,12 @@ const ProductListPage = () => {
         const data = await response.json();
         setProducts(data);
 
-        // Jika ini halaman kategori, cari nama kategorinya
-        if (categoryId && data.length > 0) {
-            setCategoryTitle(data[0].category.name);
-        }
+        if (categoryId) {
+                setProducts(data.products);
+                setCategoryTitle(data.category.name);
+            } else {
+                setProducts(data);
+            }
       } catch (err) {
         setError(err.message);
       } finally {
