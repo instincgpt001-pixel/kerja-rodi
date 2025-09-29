@@ -189,7 +189,6 @@ const CartPage = () => {
                     <p className="font-semibold text-lg text-gray-800">{item.product.name}</p>
                     <p className="text-gray-600 font-bold">Rp {Number(item.product.price).toLocaleString('id-ID')}</p>
                   </div>
-                  {/* --- AWAL PERUBAHAN --- */}
                   <div className="flex items-center space-x-2">
                     <button 
                       onClick={() => handleUpdateQuantity(item.id, item.qty - 1)} 

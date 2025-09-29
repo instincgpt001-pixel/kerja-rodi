@@ -57,7 +57,7 @@ const SmartPlaceholder = ({ product, className }) => {
 };
 
 const ProductImage = ({ product, className }) => {
-    const [imageSrc, setImageSrc] = useState('');
+    const [imageSrc, setImageSrc] = useState(null);
     const [showPlaceholder, setShowPlaceholder] = useState(false);
 
     useEffect(() => {

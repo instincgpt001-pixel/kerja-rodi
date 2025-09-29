@@ -135,4 +135,12 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(['message' => 'Produk berhasil dihapus']);
     }
+
+    /**
+     * Detail produk
+     */
+    public function show(Product $product)
+    {
+        return response()->json($product);
+    }
 }
